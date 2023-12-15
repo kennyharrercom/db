@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { readDocument } = require('../app/util');
+const { readDocument } = require('../app/CRUD/read');
 
 router.get('/*', async (req, res, next) => {
     if (!req.canRead) return res.status(401).json({ error: 'Unauthorized.' });

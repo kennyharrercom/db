@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { isPathClean, deleteDocument } = require('../app/util');
+const { isPathClean } = require('../app/util');
+const { deleteDocument } = require('../app/CRUD/delete');
 
 router.delete('/*', async (req, res, next) => {
     if (!req.canDelete) return res.status(401).json({ error: 'Unauthorized.' });

@@ -4,7 +4,7 @@ const viewCollection = require('./viewCollection');
 const setDocument = require('./setDocument');
 const updateDocument = require('./updateDocument');
 const fullPath = require('../app/middleware/fullPath');
-const tokenAuthorization = require('../app/middleware/token');
+const tokenAuthorization = require('../app/tokens/middleware');
 
 const express = require('express');
 const router = express.Router();

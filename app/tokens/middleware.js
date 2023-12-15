@@ -1,4 +1,5 @@
-const { readDocument, isAlphanumeric } = require('../util');
+const { isAlphanumeric } = require('../util');
+const { readDocument } = require('../CRUD/read');
 const path = require('path');
 
 module.exports = async (req, res, next) => {

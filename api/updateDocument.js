@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { updateDocument, isAlphanumeric } = require('../app/util');
+const { isAlphanumeric } = require('../app/util');
+const { updateDocument } = require('../app/CRUD/update');
 
 router.put('/*', async (req, res, next) => {
     //like setDocument but instead it merges with old data in the document

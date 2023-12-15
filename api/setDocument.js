@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { isAlphanumeric, writeDocument } = require('../app/util');
+const { isAlphanumeric } = require('../app/util');
+const { writeDocument } = require('../app/CRUD/write');
 
 router.post('/*', async (req, res, next) => {
     if (!req.canWrite) return res.status(401).json({ error: 'Unauthorized.' });
@@ -11,9 +12,9 @@ router.post('/*', async (req, res, next) => {
 
     const { error, code } = await writeDocument(req.fullPath, req.body || {});
 
-    if (error) return res.status(code).json({ error })
-    
-    res.status(200).json({message:'document successfully set'})
+    if (error) return res.status(code).json({ error });
+
+    res.status(200).json({ message: 'document successfully set' });
 });
 
 module.exports = router;

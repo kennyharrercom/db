@@ -1,5 +1,5 @@
 const express = require('express');
-const { readCollection } = require('../app/util');
+const { readCollection } = require('../app/CRUD/read');
 const router = express.Router();
 
 router.get('/*', async (req, res, next) => {

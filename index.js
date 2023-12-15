@@ -2,9 +2,9 @@ global.__basedir = __dirname;
 
 const express = require('express');
 const app = express();
-const myRouter = require('./api/');
+const apirouter = require('./api/');
 app.use(express.json());
-app.use('/*', myRouter);
+app.use('/*', apirouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
