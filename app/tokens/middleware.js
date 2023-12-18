@@ -17,11 +17,7 @@ module.exports = async (req, res, next) => {
     req.canRead = data.canRead;
     req.canDelete = data.canDelete;
 
-    if (data.baseDirectory) {
-        req.baseDirectory = path.join(__basedir, 'data', data.baseDirectory);
-    } else {
-        req.baseDirectory = path.join(__basedir, 'data');
-    }
+    req.tokenBaseDirectory = data.baseDirectory;
 
     // Continue to the next middleware/route handler
     next();

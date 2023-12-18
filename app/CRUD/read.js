@@ -31,7 +31,7 @@ async function readCollection(collectionPath) {
 }
 
 async function readDocument(documentPath, targetKeys) {
-    console.log(documentPath);
+    
     let doesFileExist = await checkIfFileExists(documentPath);
 
     if (!doesFileExist) {

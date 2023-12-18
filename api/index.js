@@ -5,12 +5,14 @@ const setDocument = require('./setDocument');
 const updateDocument = require('./updateDocument');
 const fullPath = require('../app/middleware/fullPath');
 const tokenAuthorization = require('../app/tokens/middleware');
+const checkPath = require('./middleware/checkPath');
 
 const express = require('express');
 const router = express.Router();
 
-router.use(tokenAuthorization);
-router.use(fullPath);
+router.use(tokenAuthorization); //check if user has authorization, get user's base collection
+router.use(fullPath); //get request path out of url
+router.use(checkPath); //check if request path exists
 
 router.use('/', deleteDocument);
 router.use('/', viewCollection);

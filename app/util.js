@@ -1,5 +1,4 @@
-const { stat, readFile, writeFile, readdir, unlink, mkdir, rm } = require('fs/promises');
-const path = require('path');
+const { stat } = require('fs/promises');
 
 function isAlphanumeric(str) {
     const regex = /^[a-zA-Z0-9]+$/;
@@ -13,8 +12,7 @@ function isPathClean(str) {
 
 async function checkIfFileExists(filePath) {
     try {
-        await stat(filePath);
-        return true; // The file exists
+        return await stat(filePath); // The file exists
     } catch (error) {
         if (error.code === 'ENOENT') {
             return false; // The file does not exist

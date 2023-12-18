@@ -2,10 +2,10 @@ const { URL } = require('url');
 const path = require('path');
 
 module.exports = (req, res, next) => {
-    const parsedUrl = new URL(req.originalUrl, 'http://' + req.headers.host + '/');
+    const parsedUrl = new URL(req.originalUrl, 'http://' + req.headers.host);
     const requestPath = parsedUrl.pathname;
 
-    req.relativePath = requestPath;
+    req.relativePath = path.join(req.tokenBaseDirectory, '/' + requestPath.replace(CRUDPATH, '')); //TODO: make this better, this is trash
 
     const isDirectory = req.relativePath[req.relativePath.length - 1] == '/';
     req.isDirectory = isDirectory;
@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
     req.documentId = documentId;
 
     req.fullPath = path.join(
-        req.baseDirectory, //in token.js, adjusts to PROJECTROOT/data/TOKENBASEDIR
+        DATAFOLDER, //in token.js, adjusts to PROJECTROOT/data/
         req.relativePath + (isDirectory ? '' : '.json')
     );
 

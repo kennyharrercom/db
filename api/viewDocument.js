@@ -4,6 +4,7 @@ const { readDocument } = require('../app/CRUD/read');
 
 router.get('/*', async (req, res, next) => {
     if (!req.canRead) return res.status(401).json({ error: 'Unauthorized.' });
+
     if (req.isDirectory) return next(); //move to view collection
 
     let { keys } = req.query || {};
@@ -12,8 +13,6 @@ router.get('/*', async (req, res, next) => {
     //read the data
 
     let { error, code, data } = await readDocument(req.fullPath, keys);
-
-    console.log(data);
 
     //handle errors
 
