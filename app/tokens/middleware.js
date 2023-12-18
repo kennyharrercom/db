@@ -3,7 +3,7 @@ const { readDocument } = require('../CRUD/read');
 const path = require('path');
 
 module.exports = async (req, res, next) => {
-    const { token } = req.query || {};
+    const { authorization: token } = req.headers || {};
 
     if (!isAlphanumeric(token)) return res.status(400).json({ error: 'Invalid token format.' });
     const { data, code } = await readDocument(
