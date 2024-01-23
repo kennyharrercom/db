@@ -1,11 +1,14 @@
 const { readdir, readFile } = require('fs/promises');
 const path = require('path');
 const { checkIfFileExists } = require('../util');
+const { waitMyTurn } = require('./queue');
 
 async function readCollection(collectionPath) {
+    let resolveQueue = await waitMyTurn()
     let doesFileExist = await checkIfFileExists(collectionPath);
 
     if (!doesFileExist) {
+        resolveQueue()
         return { error: 'The requested collection does not exist', code: 404 };
     }
 
@@ -22,19 +25,21 @@ async function readCollection(collectionPath) {
                 documents.push(file.name.replace('.json', ''));
             }
         }
-
+        resolveQueue()
         return { documents, collections, code: 200 };
     } catch (error) {
         console.log(error);
+        resolveQueue()
         return { error: 'Error reading collection', code: 500 };
     }
 }
 
 async function readDocument(documentPath, targetKeys) {
-    
+    let resolveQueue = await waitMyTurn()
     let doesFileExist = await checkIfFileExists(documentPath);
 
     if (!doesFileExist) {
+        resolveQueue()
         return { error: 'The requested document does not exist', code: 404 };
     }
 
@@ -43,14 +48,16 @@ async function readDocument(documentPath, targetKeys) {
     try {
         data = await readFile(documentPath, { encoding: 'utf-8' });
     } catch (error) {
-        console.log(error);
+        resolveQueue()
+        console.log(error, 'docpath: ' + documentPath);
         return { error: 'An internal error has occured.', code: 500 };
     }
 
     try {
         data = JSON.parse(data);
     } catch (error) {
-        console.log(error);
+        resolveQueue()
+        console.log(error, 'docpath: ' + documentPath, 'data: ' + data);
         return {
             error: 'An internal error has occured while trying to parse this document.',
             code: 500,
@@ -58,6 +65,7 @@ async function readDocument(documentPath, targetKeys) {
     }
 
     if (!targetKeys) {
+        resolveQueue()
         return { data, code: 200 };
     }
 
@@ -68,6 +76,7 @@ async function readDocument(documentPath, targetKeys) {
     }
 
     if (!Array.isArray(targetKeys)) {
+        resolveQueue()
         return { error: 'invalid targetKeys', code: 400 };
     }
 
@@ -75,6 +84,7 @@ async function readDocument(documentPath, targetKeys) {
         targetedData[targetKey] = data[targetKey];
     }
 
+    resolveQueue()
     return { data: targetedData, code: 200 };
 }
 

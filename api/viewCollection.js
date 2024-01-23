@@ -1,5 +1,6 @@
 const express = require('express');
 const { readCollection } = require('../app/CRUD/read');
+const filterCollection = require('./filterCollection');
 const router = express.Router();
 
 router.get('/*', async (req, res, next) => {
@@ -9,6 +10,11 @@ router.get('/*', async (req, res, next) => {
     //read the data
 
     let { error, code, documents, collections } = await readCollection(req.fullPath);
+
+    //filter all documents in collection
+    let { filter } = req.query || {};
+
+    if (filter) return filterCollection(documents, filter, req, res);
 
     //handle errors
 

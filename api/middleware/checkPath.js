@@ -19,6 +19,8 @@ async function recursivelyCheckPath(relativePath) {
 
         let lastFile = collections.pop() + (isDir ? '/' : '.json'); //ensure either dir (collection), or json file (document)
 
+        if (!isDir) continue;
+
         let testLocation = path.join(DATAFOLDER, ...collections, lastFile); //datafolder defined in index, spread collections, and add the final file
 
         let doesExist = await checkIfFileExists(testLocation); //fs.promises.stat with try catch wrapper

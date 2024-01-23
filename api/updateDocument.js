@@ -13,7 +13,7 @@ router.put('/*', async (req, res, next) => {
 
     const { error, code } = await updateDocument(req.fullPath, req.body || {});
 
-    if (error) return res.send(code).json({ error });
+    if (error) return res.status(code).json({ error });
 
     res.status(200).json({ message: 'successfully updated document' });
 });
