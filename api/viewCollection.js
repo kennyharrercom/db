@@ -1,6 +1,7 @@
 const express = require('express');
 const { readCollection } = require('../app/CRUD/read');
 const filterCollection = require('./filterCollection');
+const sortCollection = require('./sortCollection');
 const router = express.Router();
 
 router.get('/*', async (req, res, next) => {
@@ -15,6 +16,11 @@ router.get('/*', async (req, res, next) => {
     let { filter } = req.query || {};
 
     if (filter) return filterCollection(documents, filter, req, res);
+
+    //sort docuemtns in collection
+    let { sort, keys } = req.query || {};
+
+    if (sort && keys) return sortCollection(documents, sort, keys, req, res);
 
     //handle errors
 

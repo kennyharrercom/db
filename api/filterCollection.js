@@ -1,6 +1,6 @@
 const { readDocument } = require('../app/CRUD/read');
 
-function parseFilter(filter) {
+function parseFilters(filter) {
     // Split the filter string into parts, taking care not to split on escaped commas
     const parts = filter.split(/(?<!\\),/).map((part) => part.replace(/\\,/g, ','));
 
@@ -39,7 +39,7 @@ module.exports = async (documents, filter, req, res) => {
 
     let filteredDocuments = {};
 
-    let filters = parseFilter(filter);
+    let filters = parseFilters(filter);
 
     for (let documentName of documents) {
         let { error, code, data } = await readDocument(req.fullPath + documentName + '.json');
