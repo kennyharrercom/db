@@ -11,11 +11,9 @@ router.get('/*', async (req, res, next) => {
     if (keys && keys.includes(',')) keys = keys.split(',');
 
     //read the data
-
     let { error, code, data } = await readDocument(req.fullPath, keys);
 
     //handle errors
-
     if (error) return res.status(code).json({ error });
 
     //respond with data

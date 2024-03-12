@@ -34,8 +34,8 @@ module.exports = async (documents, sort, keys, req, res) => {
 
         documentsToSort.push({ value, document });
     }
-
-    documentsToSort.sort((a, b) => b.value - a.value).slice(0, limit);
+    
+    documentsToSort = documentsToSort.sort((a, b) => b.value - a.value).slice(0, limit);
 
     let sortedDocuments = [];
 

@@ -7,7 +7,7 @@ this middleware checks if all collections & documents exists in requested paths.
 const path = require('path');
 const { checkIfFileExists } = require('../../app/util');
 
-async function recursivelyCheckPath(relativePath) {
+async function recursivelyCheckPath(relativePath, basePath) {
     let dirs = relativePath.split(path.sep);
     dirs.shift();
 
@@ -21,7 +21,7 @@ async function recursivelyCheckPath(relativePath) {
 
         if (!isDir) continue;
 
-        let testLocation = path.join(DATAFOLDER, ...collections, lastFile); //datafolder defined in index, spread collections, and add the final file
+        let testLocation = path.join(basePath, ...collections, lastFile); //datafolder defined in index, spread collections, and add the final file
 
         let doesExist = await checkIfFileExists(testLocation); //fs.promises.stat with try catch wrapper
 
@@ -39,7 +39,7 @@ async function recursivelyCheckPath(relativePath) {
 }
 
 module.exports = async (req, res, next) => {
-    let { error, code } = (await recursivelyCheckPath(req.relativePath)) || {};
+    let { error, code } = (await recursivelyCheckPath(req.relativePath, req.basePath)) || {};
 
     if (error) {
         return res.status(code).json({ error }); //stop execution, return error to user

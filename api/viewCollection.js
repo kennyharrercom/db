@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/*', async (req, res, next) => {
     if (!req.canRead) return res.status(401).json({ error: 'Unauthorized.' });
+    
     if (!req.isDirectory) return next(); //move to view document
 
     //read the data

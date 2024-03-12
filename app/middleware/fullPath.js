@@ -5,18 +5,20 @@ module.exports = (req, res, next) => {
     const parsedUrl = new URL(req.originalUrl, 'http://' + req.headers.host);
     const requestPath = parsedUrl.pathname;
 
-    req.relativePath = path.join(req.tokenBaseDirectory, '/' + requestPath.replace(CRUDPATH, '')); //TODO: make this better, this is trash
+    req.relativePath = '/' + requestPath.replace(CRUDPATH, ''); //TODO: make this better, this is trash
 
-    const isDirectory = req.relativePath[req.relativePath.length - 1] == '/';
-    req.isDirectory = isDirectory;
+    req.isDirectory = req.relativePath[req.relativePath.length - 1] == '/';
 
-    const documentId = req.relativePath.split('/').pop();
-    req.documentId = documentId;
+    req.documentId = req.relativePath.split('/').pop();
 
-    req.fullPath = path.join(
-        DATAFOLDER, //in token.js, adjusts to PROJECTROOT/data/
-        req.relativePath + (isDirectory ? '' : '.json')
-    );
+    req.basePath = path.join(DATAFOLDER, req.tokenBaseDirectory);
+
+    req.fullPath = path.join(req.basePath, req.relativePath + (req.isDirectory ? '' : '.json'));
+
+    if (!req.fullPath.startsWith(req.basePath)) {
+        //sanity check
+        return res.status(403).send('Attempt to access resources outside the permitted directory');
+    }
 
     // Continue to the next middleware/route handler
     next();

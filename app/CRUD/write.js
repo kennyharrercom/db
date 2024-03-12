@@ -2,8 +2,8 @@ const { checkIfFileExists } = require('../util');
 const { writeFile } = require('fs/promises');
 const { waitMyTurn } = require('./queue');
 
-async function writeDocument(documentPath, data) {
-    let resolveQueue = await waitMyTurn();
+async function writeDocument(documentPath, data, useQueue) {
+    let resolveQueue = (useQueue != false && await waitMyTurn()) || function () { }
     if (typeof data != 'object') {
         resolveQueue();
         return { error: 'The requested write data is not an object.', code: 400 };

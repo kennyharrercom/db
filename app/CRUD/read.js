@@ -34,8 +34,8 @@ async function readCollection(collectionPath) {
     }
 }
 
-async function readDocument(documentPath, targetKeys) {
-    let resolveQueue = await waitMyTurn()
+async function readDocument(documentPath, targetKeys, useQueue) {
+    let resolveQueue = (useQueue != false && await waitMyTurn()) || function () { }
     let doesFileExist = await checkIfFileExists(documentPath);
 
     if (!doesFileExist) {
