@@ -46,6 +46,13 @@ async function deleteDocument(documentPath) {
 }
 
 async function deleteKeyInDocument(keys, documentPath) {
+    if (typeof keys == 'string') {
+        keys = [keys];
+    }
+    if (Array.isArray(keys) != true) {
+        return { error: 'non array keys', code: 400 };
+    }
+
     let resolveQueue = await waitMyTurn();
 
     let doesFileExist = await checkIfFileExists(documentPath);
