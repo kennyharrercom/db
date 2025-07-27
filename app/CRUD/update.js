@@ -24,11 +24,11 @@ async function updateDocument(documentPath, data, updateType) {
         switch (updateType) {
             case 'merge':
                 newData = _.merge(oldData, data);
-                break
+                break;
             default:
                 newData = _.assign(oldData, data);
-                break
-        }       
+                break;
+        }
     } catch (error) {
         resolveQueue();
         return { error: 'Failed to merge data', code: 500 };

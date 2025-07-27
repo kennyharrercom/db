@@ -11,8 +11,8 @@ router.put('/*', async (req, res, next) => {
     if (!isAlphanumeric(req.documentId))
         return res.status(400).json({ error: 'document id must be alphanumeric' });
 
-    let { type: updateType } = req.query || {}
-    
+    let { type: updateType } = req.query || {};
+
     const { error, code } = await updateDocument(req.fullPath, req.body || {}, updateType);
 
     if (error) return res.status(code).json({ error });

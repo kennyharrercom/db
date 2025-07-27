@@ -4,11 +4,11 @@ const { checkIfFileExists } = require('../util');
 const { waitMyTurn } = require('./queue');
 
 async function readCollection(collectionPath) {
-    let resolveQueue = await waitMyTurn()
+    let resolveQueue = await waitMyTurn();
     let doesFileExist = await checkIfFileExists(collectionPath);
 
     if (!doesFileExist) {
-        resolveQueue()
+        resolveQueue();
         return { error: 'The requested collection does not exist', code: 404 };
     }
 
@@ -25,21 +25,21 @@ async function readCollection(collectionPath) {
                 documents.push(file.name.replace('.json', ''));
             }
         }
-        resolveQueue()
+        resolveQueue();
         return { documents, collections, code: 200 };
     } catch (error) {
         console.log(error);
-        resolveQueue()
+        resolveQueue();
         return { error: 'Error reading collection', code: 500 };
     }
 }
 
-async function readDocument(documentPath, targetKeys, useQueue) {
-    let resolveQueue = (useQueue != false && await waitMyTurn()) || function () { }
+async function readDocument(documentPath, targetKeys, useQueue = true) {
+    let resolveQueue = (useQueue != false && (await waitMyTurn())) || function () {};
     let doesFileExist = await checkIfFileExists(documentPath);
 
     if (!doesFileExist) {
-        resolveQueue()
+        resolveQueue();
         return { error: 'The requested document does not exist', code: 404 };
     }
 
@@ -48,7 +48,7 @@ async function readDocument(documentPath, targetKeys, useQueue) {
     try {
         data = await readFile(documentPath, { encoding: 'utf-8' });
     } catch (error) {
-        resolveQueue()
+        resolveQueue();
         console.log(error, 'docpath: ' + documentPath);
         return { error: 'An internal error has occured.', code: 500 };
     }
@@ -56,7 +56,7 @@ async function readDocument(documentPath, targetKeys, useQueue) {
     try {
         data = JSON.parse(data);
     } catch (error) {
-        resolveQueue()
+        resolveQueue();
         console.log(error, 'docpath: ' + documentPath, 'data: ' + data);
         return {
             error: 'An internal error has occured while trying to parse this document.',
@@ -65,7 +65,7 @@ async function readDocument(documentPath, targetKeys, useQueue) {
     }
 
     if (!targetKeys) {
-        resolveQueue()
+        resolveQueue();
         return { data, code: 200 };
     }
 
@@ -76,7 +76,7 @@ async function readDocument(documentPath, targetKeys, useQueue) {
     }
 
     if (!Array.isArray(targetKeys)) {
-        resolveQueue()
+        resolveQueue();
         return { error: 'invalid targetKeys', code: 400 };
     }
 
@@ -84,7 +84,7 @@ async function readDocument(documentPath, targetKeys, useQueue) {
         targetedData[targetKey] = data[targetKey];
     }
 
-    resolveQueue()
+    resolveQueue();
     return { data: targetedData, code: 200 };
 }
 

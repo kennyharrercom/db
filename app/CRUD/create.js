@@ -3,18 +3,17 @@ const { mkdir } = require('fs/promises');
 const { waitMyTurn } = require('./queue');
 
 async function createCollection(collectionPath) {
-
-    let resolveQueue = await waitMyTurn()
+    let resolveQueue = await waitMyTurn();
     //TODO: this needs to be a lot better
     try {
         await mkdir(collectionPath);
     } catch (error) {
-        resolveQueue()
+        resolveQueue();
         return { error: 'failed to create collect', code: 500 };
     }
 
-    resolveQueue()
+    resolveQueue();
     return { code: 200 };
 }
 
-module.exports = {createCollection}
+module.exports = { createCollection };

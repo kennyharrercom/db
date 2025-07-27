@@ -2,7 +2,7 @@ global.crudqueue = global.crudqueue || [];
 
 async function waitMyTurn() {
     let resolver;
-    const waitPromise = new Promise(resolve => resolver = resolve);
+    const waitPromise = new Promise((resolve) => (resolver = resolve));
     global.crudqueue.push(resolver);
 
     // Check if it's not the first in the queue
@@ -15,7 +15,7 @@ async function waitMyTurn() {
 
 function imDone(resolver) {
     // Remove the resolver from the queue
-    global.crudqueue = global.crudqueue.filter(item => item !== resolver);
+    global.crudqueue = global.crudqueue.filter((item) => item !== resolver);
 
     // Call the next resolver in the queue, if any
     if (global.crudqueue.length > 0) {
@@ -26,5 +26,5 @@ function imDone(resolver) {
 
 module.exports = {
     waitMyTurn,
-    imDone // Exporting imDone is optional now, depending on your use case
+    imDone, // Exporting imDone is optional now, depending on your use case
 };

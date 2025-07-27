@@ -30,11 +30,11 @@ module.exports = async (documents, sort, keys, req, res) => {
 
         if (value == undefined) continue;
 
-        let document = getNestedValues(data, keys.split(','))
+        let document = getNestedValues(data, keys.split(','));
 
         documentsToSort.push({ value, document });
     }
-    
+
     documentsToSort = documentsToSort.sort((a, b) => b.value - a.value).slice(0, limit);
 
     let sortedDocuments = [];
