@@ -1,4 +1,10 @@
-const { stat } = require('fs/promises');
+const crypto = require('crypto');
+
+function generateAlphanumericToken(length = 128) {
+    const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const bytes = crypto.randomBytes(length);
+    return Array.from(bytes, (byte) => charset[byte % charset.length]).join('');
+}
 
 function isAlphanumeric(str) {
     const regex = /^[a-zA-Z0-9]+$/;
@@ -9,6 +15,8 @@ function isPathClean(str) {
     const regex = /^[a-zA-Z0-9\/]+$/;
     return regex.test(str);
 }
+
+const { stat } = require('fs/promises');
 
 async function checkIfFileExists(filePath) {
     try {
@@ -93,4 +101,5 @@ module.exports = {
     getNestedValues,
     getNestedValue,
     SplitNonEscapedPeriods,
+    generateAlphanumericToken,
 };

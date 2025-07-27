@@ -2,5 +2,7 @@
     "canRead": false,
     "canWrite": false,
     "canDelete": false,
-    "baseDirectory": "/"
+    "modifyTokens": false,
+    "baseDirectory": "/",
+    "label": "test token"
 }
