@@ -1,5 +1,6 @@
 const { URL } = require('url');
 const path = require('path');
+const { isPathClean } = require('../util');
 
 module.exports = (req, res, next) => {
     const parsedUrl = new URL(req.originalUrl, 'http://' + req.headers.host);
@@ -12,6 +13,12 @@ module.exports = (req, res, next) => {
     req.documentId = req.relativePath.split('/').pop();
 
     req.basePath = path.join(DATAFOLDER, req.tokenBaseDirectory);
+
+    if (!req.basePath.startsWith(DATAFOLDER) || !isPathClean(req.basePath)) {
+        return res
+            .status(403)
+            .send('Attempt to access resources outside the permitted directory or unclean path');
+    }
 
     req.fullPath = path.join(req.basePath, req.relativePath + (req.isDirectory ? '' : '.json'));
 

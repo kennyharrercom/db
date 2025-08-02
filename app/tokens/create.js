@@ -7,7 +7,7 @@ async function createToken(tokenInfo = {}) {
         return { error: 'non-object passed token info', code: 400 };
     }
 
-    if (!tokenInfo.baseDirectory) {
+    if (typeof tokenInfo.baseDirectory !== 'string') {
         return { error: 'no .baseDirectory passed to createToken', code: 400 };
     }
 
