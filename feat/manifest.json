@@ -1,0 +1,17 @@
+{
+  "version": 12,
+  "algo": "hash64",
+  "virtual_shards": 4096,
+  "assignments": {
+    "0-1023": "node-a",
+    "1024-2047": "node-b",
+    "2048-3071": "node-c",
+    "3072-4095": "node-d"
+  },
+  "nodes": {
+    "node-a": { "url": "http://10.0.0.1:3000", "weight": 1 },
+    "node-b": { "url": "http://10.0.0.2:3000", "weight": 1 },
+    "node-c": { "url": "http://10.0.0.3:3000", "weight": 1 },
+    "node-d": { "url": "http://10.0.0.4:3000", "weight": 1 }
+  }
+}
